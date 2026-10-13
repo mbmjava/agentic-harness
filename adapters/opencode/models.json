@@ -1,16 +1,36 @@
 {
+  "defaultProfile": "dev",
   "models": {
     "laguna-s": { "opencode": "openrouter/poolside/laguna-s-2.1", "claude": "haiku" },
     "laguna-xs": { "opencode": "openrouter/poolside/laguna-xs-2.1", "claude": "haiku" },
-    "luna": { "opencode": "openrouter/openai/gpt-6-luna", "claude": "sonnet" }
+    "luna": { "opencode": "openrouter/openai/gpt-6-luna", "claude": "sonnet" },
+    "luna-pro": { "opencode": "openrouter/openai/gpt-6-luna-pro", "claude": "sonnet" }
   },
-  "agents": {
-    "code-worker": "laguna-s",
-    "worker-xs": "laguna-xs",
-    "analyst": "laguna-s",
-    "spec-reviewer": "laguna-s",
-    "pr-reviewer": "luna",
-    "code-judge": "laguna-s"
+  "profiles": {
+    "dev": {
+      "code-worker": "laguna-s",
+      "worker-xs": "laguna-xs",
+      "analyst": "laguna-s",
+      "spec-reviewer": "laguna-s",
+      "pr-reviewer": "laguna-s",
+      "code-judge": "laguna-s"
+    },
+    "uat": {
+      "code-worker": "laguna-s",
+      "worker-xs": "laguna-xs",
+      "analyst": "laguna-s",
+      "spec-reviewer": "luna",
+      "pr-reviewer": "luna",
+      "code-judge": "luna"
+    },
+    "prod": {
+      "code-worker": "laguna-s",
+      "worker-xs": "laguna-xs",
+      "analyst": "laguna-s",
+      "spec-reviewer": "luna-pro",
+      "pr-reviewer": "luna-pro",
+      "code-judge": "luna-pro"
+    }
   },
   "complexity": { "xs": 180000, "s": 480000, "m": 900000, "l": 1800000 },
   "timeouts": { "defaultMs": 600000, "stopConfirmationMs": 30000, "stallMs": 120000 }

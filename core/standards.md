@@ -113,5 +113,11 @@ All three run in `npm run check`.
 | Parity | `node scripts/check-harness-parity.mjs` | a mode lacks a policy doc or command, or a role lacks a doc or agent file |
 | Model sync | `node scripts/sync-agent-models.mjs --check` | an agent's `model:` differs from `.opencode/models.json` |
 
-`.opencode/models.json` is the single source of truth for model routing; `--write` re-syncs agent files in
-place. Every role under `agents` must appear in `models` and have an agent file.
+`.opencode/models.json` holds named models and per-environment **profiles** (`dev`/`uat`/`prod`); every role in
+a profile must resolve to a known model and have an agent file. Apply a profile to the agent files at
+promotion, not per commit:
+
+```sh
+node scripts/sync-agent-models.mjs --check                # default profile (dev)
+node scripts/sync-agent-models.mjs --profile uat --write  # before promoting to uat
+```

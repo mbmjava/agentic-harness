@@ -1,7 +1,7 @@
 ---
 description: Read-only PR/diff reviewer. Reviews a change against the review checklist and returns findings plus a verdict. Never edits, never runs shell.
 mode: subagent
-model: openrouter/openai/gpt-6-luna
+model: openrouter/poolside/laguna-s-2.1
 permissions:
   - action: "*"
     resource: "*"

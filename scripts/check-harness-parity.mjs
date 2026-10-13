@@ -5,7 +5,7 @@ import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { MODES } from './lib/mode.mjs';
-import { loadConfig } from './lib/config.mjs';
+import { loadConfig, profileRoles } from './lib/config.mjs';
 import { resolveAgentsDir, resolveCommandsDir, resolveCoreDir, resolveSkillsDir } from './lib/layout.mjs';
 
 export function runCheckParity(root = process.cwd()) {
@@ -25,7 +25,7 @@ export function runCheckParity(root = process.cwd()) {
   if (!existsSync(join(skills, 'mode', 'SKILL.md'))) errors.push('missing shared skill: mode/SKILL.md');
 
   const config = loadConfig(root);
-  for (const role of Object.keys(config.agents)) {
+  for (const role of profileRoles(config)) {
     if (!existsSync(join(core, 'roles', `${role}.md`))) errors.push(`missing role doc: core/roles/${role}.md`);
     if (!existsSync(join(agents, `${role}.md`))) errors.push(`missing subagent: ${role}.md`);
   }

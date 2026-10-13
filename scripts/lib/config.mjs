@@ -6,14 +6,16 @@ function positiveInteger(value, name) {
   return value;
 }
 
-// Shared config for bounded, visible subagents: model routing, complexity budgets, and the
-// deadline/stall windows. No token accounting.
+// Shared config: a set of named models, per-environment profiles (role -> model), complexity budgets,
+// and the deadline/stall windows. Models and roles are separate axes, so an environment promotion is a
+// profile change, not a role rename.
 export function loadConfig(root = process.cwd()) {
   const file = resolveConfigPath(root);
   const config = JSON.parse(readFileSync(file, 'utf8'));
-  if (!config.models || !config.agents || !config.timeouts) {
-    throw new Error(`${file}: models, agents, and timeouts are required`);
+  if (!config.models || !config.profiles || !config.defaultProfile) {
+    throw new Error(`${file}: models, profiles, and defaultProfile are required`);
   }
+  if (!config.timeouts) throw new Error(`${file}: timeouts are required`);
   positiveInteger(config.timeouts.defaultMs, 'timeouts.defaultMs');
   positiveInteger(config.timeouts.stopConfirmationMs, 'timeouts.stopConfirmationMs');
   if (config.timeouts.stallMs != null) positiveInteger(config.timeouts.stallMs, 'timeouts.stallMs');
@@ -22,18 +24,41 @@ export function loadConfig(root = process.cwd()) {
       positiveInteger(ms, `complexity.${klass}`);
     }
   }
+  if (!Object.hasOwn(config.profiles, config.defaultProfile)) {
+    throw new Error(`${file}: defaultProfile '${config.defaultProfile}' is not a defined profile`);
+  }
+  for (const [name, profile] of Object.entries(config.profiles)) {
+    for (const [role, modelKey] of Object.entries(profile)) {
+      if (!Object.hasOwn(config.models, modelKey)) {
+        throw new Error(`${file}: profile '${name}' role '${role}' -> unknown model '${modelKey}'`);
+      }
+    }
+  }
   return config;
 }
 
-export function resolveConfiguredModel(config, role, harness = 'opencode') {
-  const modelKey = config.agents[role];
+export function resolveProfile(config, requested = null) {
+  const profile = requested ?? config.defaultProfile;
+  if (!Object.hasOwn(config.profiles, profile)) {
+    throw new Error(`Unknown profile '${profile}'. Expected one of: ${Object.keys(config.profiles).join(', ')}`);
+  }
+  return profile;
+}
+
+export function profileRoles(config, profile = config.defaultProfile) {
+  return Object.keys(config.profiles[resolveProfile(config, profile)]);
+}
+
+export function resolveConfiguredModel(config, role, harness = 'opencode', profile = config.defaultProfile) {
+  const map = config.profiles[resolveProfile(config, profile)];
+  const modelKey = map[role];
   if (!modelKey || !Object.hasOwn(config.models, modelKey)) {
-    throw new Error(`No configured model mapping for subagent role '${role}'`);
+    throw new Error(`No configured model mapping for role '${role}' in profile '${profile}'`);
   }
   const entry = config.models[modelKey];
   const model = typeof entry === 'string' ? entry : entry[harness];
   if (typeof model !== 'string' || model.length === 0) {
-    throw new Error(`No ${harness} model configured for subagent role '${role}'`);
+    throw new Error(`No ${harness} model configured for role '${role}' (profile '${profile}')`);
   }
   return model;
 }
