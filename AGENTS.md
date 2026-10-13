@@ -27,6 +27,7 @@ Full set: [`core/principles.md`](core/principles.md).
 - **Supervise by complexity.** Give each worker a complexity class (`xs|s|m|l`); a stall is resumed, then
   re-dispatched, then escalated — and the watchdog starts in the same turn as the dispatch. See
   [`core/roles/orchestrator.md`](core/roles/orchestrator.md).
+- **Stagger background spawns** (one at a time, across turns), then let them run concurrently.
 - **Visible narration every turn.** Announce each multi-minute step and its result; no silent tool-only turns.
 - **Work an ordered queue** until a stop condition: a needed decision, a scope change, a destructive or
   irreversible action, an unfixable verification failure, or the end of the queue. End every turn with the

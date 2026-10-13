@@ -100,6 +100,10 @@ The orchestrator **never blocks on a worker**: dispatch it in the background and
 background process too, so the orchestrator stays responsive. The watchdog records nothing you must read — no
 ledger, no artifact. See the `## Supervise` section of `AGENTS.md`.
 
+**Spawn staggered.** Start background workers **one at a time (across turns), never several in one tool
+batch** — a same-batch pair can leave one child hung at launch with zero tokens (observed). Once started,
+they run concurrently, so staggering costs nothing and avoids the hang.
+
 ## 6. Verification
 
 - Prefer bounded wrappers over ad hoc foreground commands; a raw foreground server/build is the hang bug.

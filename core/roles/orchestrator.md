@@ -36,6 +36,8 @@ visible from the runtime (child sessions); report status on request and keep no 
 - Parallelize only work with disjoint write scopes and independent verification.
 - **Never block.** Dispatch each worker in the background and start its watchdog as a background process; the
   orchestrator stays responsive while workers run.
+- **Stagger spawns.** Start background workers one at a time (across turns), not several in one tool batch; a
+  same-batch pair can leave one child hung at launch. Once started, they run concurrently.
 - Serialize build and verification: build output, ports, and caches are shared.
 - Match the cheapest tier that can hold quality: `worker-xs` for mechanical edits, `code-worker` for scoped
   implementation, `analyst` for read-only recon.
