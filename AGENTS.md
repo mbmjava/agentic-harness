@@ -66,7 +66,7 @@ Full policy: [`core/standards.md`](core/standards.md).
 - **Keep the review loop cheap.** Freeze intent, batch findings into one fix commit, re-verify once; a
   second re-verify is a process failure — fix the loop, not the PR.
 - **A lasting decision never lives only in a handoff** — promote it into the code, the spec, or the tracker.
-- **Never claim to see an image.** Delegate to a capture/vision capability.
+- **Never claim to see an image.** Capture it (`node scripts/screenshot.mjs --url <url> --out <png>`) and read the image.
 
 ## Verify
 
@@ -74,6 +74,7 @@ Full policy: [`core/standards.md`](core/standards.md).
 - Harness parity: `node scripts/check-harness-parity.mjs`
 - Model sync: `node scripts/sync-agent-models.mjs --check`
 - Unit tests: `npm test`
+- Visual: `node scripts/screenshot.mjs --url <url> --out shot.png` (then read the image)
 
 ## Supervise
 

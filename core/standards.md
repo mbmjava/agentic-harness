@@ -112,6 +112,8 @@ heartbeat during a model turn — an actively working child can look idle. The d
 - Prefer bounded wrappers over ad hoc foreground commands; a raw foreground server/build is the hang bug.
 - Treat a green command as evidence only for what it actually checked.
 - Reproduce before you fix; keep the failing test as the regression guard.
+- For UI/canvas changes, **never claim to see the page — capture a headless screenshot**
+  (`node scripts/screenshot.mjs --url <url> --out <png>`) and read the image. See the screenshot skill.
 
 ## 7. Harness is code
 
