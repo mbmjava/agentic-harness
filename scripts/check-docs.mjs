@@ -19,6 +19,7 @@ const REQUIRED = [
   'docs/standards/modes.md',
   'docs/standards/agent-standards.md',
   'docs/standards/harness-checks.md',
+  'docs/standards/work-tracker.md',
 ];
 
 function walk(dir, out = []) {

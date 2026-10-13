@@ -21,7 +21,8 @@ On entry, look for an issue already in play, in this order:
    capture the intent in the backlog or a spec and **ask the owner to create the issue**, then pick it up.
 
 The tracker is a mirror: the repository stays the source of truth, and tracker edits never sync back. See
-[`docs/standards/agent-standards.md`](../../docs/standards/agent-standards.md).
+[`docs/standards/agent-standards.md`](../../docs/standards/agent-standards.md) and
+[`docs/standards/work-tracker.md`](../../docs/standards/work-tracker.md).
 
 ## Formalize
 

@@ -56,3 +56,7 @@ Full policy: [`docs/standards/modes.md`](docs/standards/modes.md).
 ## Recover
 
 - Handoff: `node scripts/handoff.mjs --issue KAN-1 --next "the exact next action"` (writes `working-docs/handoff.md`)
+
+## Track (read-only)
+
+- Intake: `node scripts/tracker.mjs --intake` (needs JIRA_TOKEN at runtime; never writes to the tracker)
