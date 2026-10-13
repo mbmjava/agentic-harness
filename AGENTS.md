@@ -73,7 +73,6 @@ Full policy: [`core/standards.md`](core/standards.md).
 
 ## Verify
 
-- Docs and links: `node scripts/check-docs.mjs`
 - Harness parity: `node scripts/check-harness-parity.mjs`
 - Model sync: `node scripts/sync-agent-models.mjs --check`
 - Unit tests: `npm test`

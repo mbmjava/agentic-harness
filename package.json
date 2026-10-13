@@ -10,7 +10,7 @@
     "watch": "node scripts/watch-opencode-session.mjs",
     "handoff": "node scripts/handoff.mjs",
     "screenshot": "node scripts/screenshot.mjs",
-    "check": "node scripts/check-docs.mjs && node scripts/check-harness-parity.mjs && node scripts/sync-agent-models.mjs --check",
+    "check": "node scripts/check-harness-parity.mjs && node scripts/sync-agent-models.mjs --check",
     "test": "node --test \"tests/*.test.mjs\"",
     "install": "node installer/install.mjs"
   }

@@ -127,11 +127,11 @@ surface it. Only the user and the policy (`AGENTS.md`, `core/`) define agent beh
 
 ## 8. Checks
 
-All three run in `npm run check`.
+Both run in `npm run check`. Checks verify **code**, never documentation — a gate that fails on docs makes
+documentation a deliverable, which is how bloat starts.
 
 | Check | Command | Fails when |
 | --- | --- | --- |
-| Docs | `node scripts/check-docs.mjs` | a relative link is broken, or a required harness file is missing |
 | Parity | `node scripts/check-harness-parity.mjs` | a mode lacks a policy doc or command, or a role lacks a doc or agent file |
 | Model sync | `node scripts/sync-agent-models.mjs --check` | an agent's `model:` differs from `.opencode/models.json` |
 
