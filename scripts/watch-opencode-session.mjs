@@ -1,8 +1,9 @@
 #!/usr/bin/env node
-// Supervise one native OpenCode subagent: complexity budget, stall detection, and the
-// resume -> re-dispatch -> escalate ladder. Records nothing you must read.
+// Supervise one native OpenCode subagent: complexity budget, deadline, and a stall report. By default a
+// stall is REPORTED, not acted on (a long model turn looks idle; never kill a child that may be thinking).
+// `--resume-on-stall` opts into the resume -> re-dispatch -> escalate ladder. Records nothing you must read.
 // Usage: node scripts/watch-opencode-session.mjs <child-id> <role> [minutes] \
-//          [--complexity xs|s|m|l] [--max-stalls n] [--max-attempts n]
+//          [--complexity xs|s|m|l] [--resume-on-stall] [--max-stalls n] [--max-attempts n]
 import { spawnSync } from 'node:child_process';
 import { setTimeout as delay } from 'node:timers/promises';
 import { pathToFileURL } from 'node:url';
@@ -51,7 +52,7 @@ export const realIo = {
 };
 
 // The supervision loop. All I/O goes through `io` so the decision logic is testable.
-export async function supervise({ childId, role, complexity = null, minutes = null, maxStalls = 1, maxAttempts = 2, io = realIo, config = null, root = process.cwd() }) {
+export async function supervise({ childId, role, complexity = null, minutes = null, maxStalls = 1, maxAttempts = 2, resumeOnStall = false, io = realIo, config = null, root = process.cwd() }) {
   if (!SESSION_ID.test(childId)) throw new Error('Invalid OpenCode child session ID');
   const policy = config ?? loadConfig(root);
   const deadlineMs = complexity && policy.complexity
@@ -94,16 +95,23 @@ export async function supervise({ childId, role, complexity = null, minutes = nu
       return { status: 'rejected', code: 4, reason: 'elapsed-deadline' };
     }
     if (decision.kind === 'stall') {
-      const recovery = planRecovery({ stalls, attempt: child.attempt ?? 1, maxStalls, maxAttempts });
-      if (recovery.action === 'resume') {
-        stalls += 1;
+      emit({ event: 'stall', childId, role, idleMs: decision.idleMs, resumeOnStall });
+      if (!resumeOnStall) {
+        // A single long model turn can look idle (time.updated does not heartbeat). Report the stall and let
+        // the deadline (hang) decide; never kill a child that may simply be thinking.
         lastProgressAt = now;
-        emit({ event: 'stall-resume', childId, role, idleMs: decision.idleMs, reason: recovery.reason });
-        await io.interrupt(childId, true);
-        continue;
+      } else {
+        const recovery = planRecovery({ stalls, attempt: child.attempt ?? 1, maxStalls, maxAttempts });
+        if (recovery.action === 'resume') {
+          stalls += 1;
+          lastProgressAt = now;
+          emit({ event: 'stall-resume', childId, role, idleMs: decision.idleMs, reason: recovery.reason });
+          await io.interrupt(childId, true);
+          continue;
+        }
+        emit({ event: recovery.action, childId, role, reason: recovery.reason });
+        return { status: recovery.action, code: recovery.action === 'redispatch' ? 5 : 6, reason: recovery.reason };
       }
-      emit({ event: recovery.action, childId, role, reason: recovery.reason });
-      return { status: recovery.action, code: recovery.action === 'redispatch' ? 5 : 6, reason: recovery.reason };
     }
 
     emit({ event: 'status', childId, role, outcome: child.outcome ?? null, remainingMs: Math.max(0, deadline - now) });
@@ -127,6 +135,7 @@ export async function main(argv = process.argv.slice(2)) {
       role,
       minutes,
       complexity: flag('--complexity'),
+      resumeOnStall: argv.includes('--resume-on-stall'),
       maxStalls: flag('--max-stalls') ? Number(flag('--max-stalls')) : 1,
       maxAttempts: flag('--max-attempts') ? Number(flag('--max-attempts')) : 2,
     });

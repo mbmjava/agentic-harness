@@ -53,27 +53,36 @@ describe('supervise', () => {
     assert.deepEqual(io.interrupts, [false]);
   });
 
-  it('resumes a stall and then accepts success', async () => {
+  it('reports a stall but does NOT interrupt by default', async () => {
+    const idle = session();
+    const done = session({ outcome: 'succeeded', updated: 400 });
+    const io = fakeIo({ sessions: [idle, idle, done], times: [150, 300, 400] });
+    const result = await quiet(() => supervise({ childId: 'ses_child', role: 'worker', complexity: 'm', io, config }));
+    assert.equal(result.status, 'accepted');
+    assert.deepEqual(io.interrupts, []);
+  });
+
+  it('resumes a stall (opt-in) and then accepts success', async () => {
     const idle = session();
     const done = session({ outcome: 'succeeded', updated: 101 });
     const io = fakeIo({ sessions: [idle, idle, done], times: [100, 200, 300] });
-    const result = await quiet(() => supervise({ childId: 'ses_child', role: 'worker', complexity: 'm', io, config }));
+    const result = await quiet(() => supervise({ childId: 'ses_child', role: 'worker', complexity: 'm', resumeOnStall: true, io, config }));
     assert.equal(result.status, 'accepted');
     assert.deepEqual(io.interrupts, [true]);
   });
 
-  it('redispatches after a second stall', async () => {
+  it('redispatches after a second stall (opt-in)', async () => {
     const io = fakeIo({ sessions: [session()], times: [100, 200] });
-    const result = await quiet(() => supervise({ childId: 'ses_child', role: 'worker', complexity: 'm', io, config }));
+    const result = await quiet(() => supervise({ childId: 'ses_child', role: 'worker', complexity: 'm', resumeOnStall: true, io, config }));
     assert.equal(result.status, 'redispatch');
     assert.equal(result.code, 5);
     assert.deepEqual(io.interrupts, [true]);
   });
 
-  it('escalates when resume and redispatch are exhausted', async () => {
+  it('escalates when resume and redispatch are exhausted (opt-in)', async () => {
     const io = fakeIo({ sessions: [session()], times: [100, 200] });
     const result = await quiet(() =>
-      supervise({ childId: 'ses_child', role: 'worker', complexity: 'm', maxAttempts: 1, io, config }));
+      supervise({ childId: 'ses_child', role: 'worker', complexity: 'm', resumeOnStall: true, maxAttempts: 1, io, config }));
     assert.equal(result.status, 'escalate');
     assert.equal(result.code, 6);
   });
