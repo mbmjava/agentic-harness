@@ -47,3 +47,8 @@ Full policy: [`docs/standards/modes.md`](docs/standards/modes.md).
 - Harness parity: `node scripts/check-harness-parity.mjs`
 - Model sync: `node scripts/sync-agent-models.mjs --check`
 - Unit tests: `npm test`
+
+## Supervise
+
+- Ledger: `node scripts/supervision.mjs --add --id u1 --role worker --complexity m`
+- Watchdog: `node scripts/watch-opencode-session.mjs <child-id> <role> --complexity m --unit u1`

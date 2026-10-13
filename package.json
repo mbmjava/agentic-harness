@@ -7,6 +7,8 @@
   "scripts": {
     "mode": "node scripts/mode.mjs",
     "guard": "node scripts/branch-guard.mjs",
+    "supervision": "node scripts/supervision.mjs",
+    "watch": "node scripts/watch-opencode-session.mjs",
     "check": "node scripts/check-docs.mjs && node scripts/check-harness-parity.mjs && node scripts/sync-agent-models.mjs --check",
     "test": "node --test \"tests/*.test.mjs\"",
     "install": "node installer/install.mjs"

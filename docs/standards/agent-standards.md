@@ -55,6 +55,14 @@ place.
 - Record every in-flight unit in `.agentic/supervision.json` (unit → role, session, complexity, attempt, state)
   so a stalled or restarted session can recover.
 
+```sh
+node scripts/supervision.mjs --add --id u1 --role worker --complexity m   # open a unit
+node scripts/supervision.mjs                                              # list in-flight units
+node scripts/watch-opencode-session.mjs <child-id> worker --complexity m --unit u1
+```
+
+The watchdog exits `0` accepted, `4` rejected (hang or non-success), `5` re-dispatch, `6` escalate.
+
 ## 5. Verification
 
 - Prefer repository wrappers over ad hoc foreground commands.
