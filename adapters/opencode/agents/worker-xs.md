@@ -21,7 +21,9 @@ Typical jobs: rename a symbol across files, fix imports, add/adjust YAML front-m
 relative links, substitute a string/constant, apply a find-replace list.
 
 Hard rules:
-- Write ONLY the files named in the assignment. Never create, delete, or edit anything else.
+- Write ONLY the files named in the assignment. Never create, delete, or edit anything else. **Never touch the
+  harness** (`AGENTS.md`, `.agentic/`, `.opencode/`, `scripts/`, `docs/`) — those are not yours.
+- Return your report as your message; do **not** write it into any file.
 - NEVER run git **writes** (add/commit/push/merge) or any build, test, docker, or app command.
 - Return a unified diff (or exact old/new snippets) of every change; do not restate whole files.
 - If the instruction is ambiguous, or a match is not unique, STOP and say so in your report instead of

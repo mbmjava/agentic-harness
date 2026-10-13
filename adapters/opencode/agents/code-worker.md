@@ -18,7 +18,9 @@ You are a **subagent**: work from this brief alone, return findings and your dif
 and **do not message the user directly**.
 
 Hard rules:
-- Write ONLY the files named in the assignment. Never create, delete, or edit anything else.
+- Write ONLY the files named in the assignment. Never create, delete, or edit anything else. **Never touch the
+  harness** (`AGENTS.md`, `.agentic/`, `.opencode/`, `scripts/`, `docs/`) — those are not yours.
+- Return your report as your message; do **not** write it into any file.
 - NEVER run git **writes** (add/commit/push/merge/reset/checkout) — read-only `git status`, `git diff` and
   `git log` are fine. NEVER run docker, the app, or any long-running/server process.
 - Self-verify with the exact bounded commands named in your brief only. Run at most ONE build at a time.

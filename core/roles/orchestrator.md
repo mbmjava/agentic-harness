@@ -30,6 +30,8 @@ integration; it drives workers rather than doing implementation itself.
 
 - Delegate whenever a bounded slice can be safely delegated. The user is never the trigger.
 - Parallelize only work with disjoint write scopes and independent verification.
+- **Never block.** Dispatch each worker in the background and start its watchdog as a background process; the
+  orchestrator stays responsive while workers run.
 - Serialize build and verification: build output, ports, and caches are shared.
 - Match the cheapest tier that can hold quality: `worker-xs` for mechanical edits, `code-worker` for scoped
   implementation, `analyst` for read-only recon.

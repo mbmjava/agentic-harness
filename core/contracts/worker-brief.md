@@ -23,4 +23,7 @@ Rules:
 - **Disjoint scopes.** Parallel workers never share a writable file.
 - **Exact commands.** `VERIFY WITH` names exact commands, not globs or ad hoc shell.
 - **No git writes.** A worker never commits, pushes, or checks out.
-- **Return contract.** The worker returns a diff plus the [worker report](worker-report.md) shape.
+- **The scope is a fence.** Write ONLY the files in `WRITE SCOPE`; never touch the harness (`AGENTS.md`,
+  `.agentic/`, `.opencode/`, `scripts/`, `docs/`) or any other file.
+- **Return contract.** The worker returns a diff plus the [worker report](worker-report.md) shape — as its
+  message, never written into a file.

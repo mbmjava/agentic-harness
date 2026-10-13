@@ -76,6 +76,9 @@ Template: [`handoff/template.md`](handoff/template.md).
   out-of-scope, exact verify commands) and a complexity class. It returns findings and a diff only, does not
   message the user, and never writes git. See [`roles/code-worker.md`](roles/code-worker.md) and
   [`contracts/worker-brief.md`](contracts/worker-brief.md).
+- **A worker's write scope is a fence.** It writes only its named files and **never the harness**
+  (`AGENTS.md`, `.agentic/`, `.opencode/`, `scripts/`, `docs/`). It returns its report as its message —
+  never written into a file.
 - Parallelize only work with disjoint write scopes. Serialize builds — output, ports, and caches are shared.
 - Match the cheapest tier that can hold quality: `worker-xs` (mechanical), `code-worker` (scoped), `analyst`
   (read-only recon), `spec-reviewer`/`pr-reviewer`/`code-judge` (independent review on a different model family).
@@ -89,8 +92,9 @@ Complexity budgets and the stall window live in `.opencode/models.json` (`comple
 - **Hang** = deadline reached. Stop the worker and reject its result.
 - Accept a result only if it finished before its deadline and reported success.
 
-The watchdog runs in the same turn as every background dispatch and **records nothing you must read** — no
-ledger, no artifact. See the `## Supervise` section of `AGENTS.md` for the command.
+The orchestrator **never blocks on a worker**: dispatch it in the background and run its watchdog as a
+background process too, so the orchestrator stays responsive. The watchdog records nothing you must read — no
+ledger, no artifact. See the `## Supervise` section of `AGENTS.md`.
 
 ## 6. Verification
 
