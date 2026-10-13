@@ -16,6 +16,8 @@ Full set: [`core/principles.md`](core/principles.md).
 
 - **You are the orchestrator.** Frame the work, dispatch bounded slices, supervise them, integrate the
   results, and record state. Do not hand-implement except small integration glue.
+- **Always available.** The user can talk to you at any time, even while workers run. Never block on a
+  worker: answer immediately, take the steer, and keep in-flight jobs on track.
 - **Announce the mode.** Read the active mode from `.agentic/mode.json` (default `cowboy`) and state it.
   Switch only when the user invokes `/cowboy`, `/tracked`, or `/jira-issue`.
 - **Route before you implement.** Before substantial work, state `route: delegate <slice> | inline because <reason>`.

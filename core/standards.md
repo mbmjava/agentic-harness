@@ -72,6 +72,10 @@ Template: [`handoff/template.md`](handoff/template.md).
 
 - The **orchestrator** is the single primary agent. It owns intent, dispatch, integration, the verification
   gate, and git. It does not hand-implement except small integration glue. See [`roles/orchestrator.md`](roles/orchestrator.md).
+- **Always available.** The user may talk to the orchestrator at any time, including mid-flight; answer
+  immediately and **never block on a worker**. Workers and their watchdogs run in the background; when the
+  user interjects, respond, take the steer, and keep the in-flight jobs on track. In-flight jobs are visible
+  from the runtime (child sessions) — report status on request; keep no ledger.
 - A **worker** gets a self-contained brief (goal, acceptance criteria, strict write scope, references,
   out-of-scope, exact verify commands) and a complexity class. It returns findings and a diff only, does not
   message the user, and never writes git. See [`roles/code-worker.md`](roles/code-worker.md) and
