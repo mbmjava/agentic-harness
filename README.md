@@ -4,7 +4,7 @@ A standalone, tool-neutral agentic coding harness: **one orchestrator, three mod
 of low-cost workers.**
 
 The harness is a *distributable*, not something each app re-invents. It is developed here, then
-materialized into a target repository's `.opencode/`, `.agentic/`, and `docs/agentic/` by the installer.
+materialized into a target repository's `.opencode/` and `.agentic/` by the installer.
 Existing apps (`agentic-approach`, `tagwell-*`, `work-approach`) are **read-only sources** this repo
 learns from — never edit targets.
 
@@ -24,8 +24,8 @@ learns from — never edit targets.
 
 - [`AGENTS.md`](AGENTS.md) — the short entry an agent loads every session.
 - [`core/roles/orchestrator.md`](core/roles/orchestrator.md) — what the orchestrator does (and refuses).
-- [`docs/standards/modes.md`](docs/standards/modes.md) — the three modes in detail.
-- [`docs/standards/agent-standards.md`](docs/standards/agent-standards.md) — how work and recovery are run.
+- [`core/principles.md`](core/principles.md) — the anti-ceremony rules.
+- [`core/standards.md`](core/standards.md) — modes, session protocol, supervision, verification.
 
 ## Develop
 

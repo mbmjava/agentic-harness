@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 // Supervise one native OpenCode subagent: complexity budget, stall detection, and the
-// resume -> re-dispatch -> escalate ladder. Updates the supervision ledger when --unit is given.
+// resume -> re-dispatch -> escalate ladder. Records nothing you must read.
 // Usage: node scripts/watch-opencode-session.mjs <child-id> <role> [minutes] \
-//          [--complexity xs|s|m|l] [--unit <id>] [--max-stalls n] [--max-attempts n]
+//          [--complexity xs|s|m|l] [--max-stalls n] [--max-attempts n]
 import { spawnSync } from 'node:child_process';
 import { setTimeout as delay } from 'node:timers/promises';
 import { pathToFileURL } from 'node:url';
 import { loadConfig, resolveDeadlineMs, complexityBudgetMs } from './lib/config.mjs';
-import { evaluateWatch, planRecovery, updateUnit } from './lib/supervision.mjs';
+import { evaluateWatch, planRecovery } from './lib/supervision.mjs';
 
 const SESSION_ID = /^ses[A-Za-z0-9_-]+$/;
 const POLL_MS = 5_000;
@@ -51,7 +51,7 @@ export const realIo = {
 };
 
 // The supervision loop. All I/O goes through `io` so the decision logic is testable.
-export async function supervise({ childId, role, complexity = null, minutes = null, unitId = null, maxStalls = 1, maxAttempts = 2, io = realIo, config = null, root = process.cwd() }) {
+export async function supervise({ childId, role, complexity = null, minutes = null, maxStalls = 1, maxAttempts = 2, io = realIo, config = null, root = process.cwd() }) {
   if (!SESSION_ID.test(childId)) throw new Error('Invalid OpenCode child session ID');
   const policy = config ?? loadConfig(root);
   const deadlineMs = complexity && policy.complexity
@@ -72,8 +72,6 @@ export async function supervise({ childId, role, complexity = null, minutes = nu
   let stalls = 0;
   emit({ event: 'watching', childId, role, complexity, deadline, stallMs });
 
-  const record = (patch) => { if (unitId) updateUnit(root, unitId, patch); };
-
   while (true) {
     child = await io.getSession(childId);
     const now = io.now();
@@ -83,18 +81,15 @@ export async function supervise({ childId, role, complexity = null, minutes = nu
     const decision = evaluateWatch({ outcome: child.outcome, now, deadline, lastProgressAt, stallMs });
 
     if (decision.kind === 'done') {
-      record({ state: 'done', note: 'accepted', now });
       emit({ event: 'accepted', childId, role, outcome: child.outcome });
       return { status: 'accepted', code: 0, outcome: child.outcome };
     }
     if (decision.kind === 'failed') {
-      record({ state: 'failed', note: decision.outcome, now });
       emit({ event: 'result-rejected', childId, role, reason: 'terminal-non-success', outcome: decision.outcome });
       return { status: 'rejected', code: 4, reason: 'terminal-non-success', outcome: decision.outcome };
     }
     if (decision.kind === 'hang') {
       await io.interrupt(childId, false);
-      record({ state: 'failed', note: 'elapsed-deadline', now });
       emit({ event: 'result-rejected', childId, role, reason: 'elapsed-deadline' });
       return { status: 'rejected', code: 4, reason: 'elapsed-deadline' };
     }
@@ -103,12 +98,10 @@ export async function supervise({ childId, role, complexity = null, minutes = nu
       if (recovery.action === 'resume') {
         stalls += 1;
         lastProgressAt = now;
-        record({ state: 'resume-requested', stalls, note: recovery.reason, now });
         emit({ event: 'stall-resume', childId, role, idleMs: decision.idleMs, reason: recovery.reason });
         await io.interrupt(childId, true);
         continue;
       }
-      record({ state: recovery.action === 'redispatch' ? 'redispatch' : 'escalated', stalls, note: recovery.reason, now });
       emit({ event: recovery.action, childId, role, reason: recovery.reason });
       return { status: recovery.action, code: recovery.action === 'redispatch' ? 5 : 6, reason: recovery.reason };
     }
@@ -121,7 +114,7 @@ export async function supervise({ childId, role, complexity = null, minutes = nu
 export async function main(argv = process.argv.slice(2)) {
   const [childId, role, minutes] = argv;
   if (!childId || !role) {
-    console.error('Usage: node scripts/watch-opencode-session.mjs <child-id> <role> [minutes] [--complexity c] [--unit id]');
+    console.error('Usage: node scripts/watch-opencode-session.mjs <child-id> <role> [minutes] [--complexity c]');
     return 2;
   }
   const flag = (name) => {
@@ -134,7 +127,6 @@ export async function main(argv = process.argv.slice(2)) {
       role,
       minutes,
       complexity: flag('--complexity'),
-      unitId: flag('--unit'),
       maxStalls: flag('--max-stalls') ? Number(flag('--max-stalls')) : 1,
       maxAttempts: flag('--max-attempts') ? Number(flag('--max-attempts')) : 2,
     });

@@ -19,11 +19,6 @@ tags: [handoff, memory]
 - **Active spec:** <name (SPEC-ID-000) | none> · **spec_type:** <… | unknown> · `approval_mode`: <human | judge | unknown>
 - **Tracker issue:** <KEY | none>
 
-## Open units
-
-## Supervision ledger
-<!-- In-flight units: unit → role, session, complexity, attempt, state. Mirrors .agentic/supervision.json. -->
-
 ## Current PR watch
 <!-- not-submitted | open | merged | closed | unavailable; head SHA; reviews/checks; next action -->
 

@@ -24,8 +24,6 @@ const GIT = {
   commits: ['abc1234 feat: x', 'def5678 chore: y'],
 };
 
-const UNITS = [{ id: 'u1', role: 'worker', complexity: 's', state: 'running', attempt: 1 }];
-
 function tempRoot() {
   const root = mkdtempSync(join(tmpdir(), 'harness-handoff-'));
   mkdirSync(join(root, '.agentic'), { recursive: true });
@@ -42,13 +40,12 @@ describe('extractSection', () => {
 });
 
 describe('renderHandoff', () => {
-  it('renders generated facts and units', () => {
-    const out = renderHandoff({ mode: 'tracked', git: GIT, units: UNITS, spec: 'Thing (SPEC-1)', issue: 'KAN-1', date: '2025-10-12' });
+  it('renders generated facts', () => {
+    const out = renderHandoff({ mode: 'tracked', git: GIT, spec: 'Thing (SPEC-1)', issue: 'KAN-1', date: '2025-10-12' });
     assert.match(out, /- \*\*Mode:\*\* tracked/);
     assert.match(out, /- \*\*Branch:\*\* `feature\/x` @ abc1234 \(0 behind \/ 2 ahead\)/);
     assert.match(out, /- \*\*Working tree:\*\* 1 uncommitted/);
     assert.match(out, /- \*\*Tracker issue:\*\* KAN-1/);
-    assert.match(out, /- u1 — worker\/s state=running attempt=1/);
     assert.match(out, /- abc1234 feat: x/);
   });
 
@@ -60,10 +57,9 @@ describe('renderHandoff', () => {
 });
 
 describe('generateHandoff', () => {
-  it('merges context, ledger, and preserved sections', () => {
+  it('merges context and preserved sections', () => {
     const root = tempRoot();
     writeFileSync(join(root, '.agentic', 'mode.json'), JSON.stringify({ mode: 'tracked' }));
-    writeFileSync(join(root, '.agentic', 'supervision.json'), JSON.stringify({ units: [{ ...UNITS[0], updatedAt: 0 }] }));
     writeFileSync(join(root, '.agentic', 'context.json'), JSON.stringify({ spec: 'Thing (SPEC-1)', issue: 'KAN-1' }));
     mkdirSync(join(root, 'working-docs'), { recursive: true });
     writeFileSync(join(root, HANDOFF_FILE), [
@@ -81,16 +77,8 @@ describe('generateHandoff', () => {
     const out = generateHandoff({ root, git: GIT, now: new Date('2025-10-12T00:00:00Z') });
     assert.match(out, /- \*\*Mode:\*\* tracked/);
     assert.match(out, /- \*\*Tracker issue:\*\* KAN-1/);
-    assert.match(out, /- u1 — worker\/s/);
     assert.match(out, /Finish the widget\./);
     assert.match(out, /- blocked on the gate/);
-  });
-
-  it('drops units that are done or failed', () => {
-    const root = tempRoot();
-    writeFileSync(join(root, '.agentic', 'supervision.json'), JSON.stringify({ units: [{ ...UNITS[0], state: 'done' }] }));
-    const out = generateHandoff({ root, git: GIT, now: new Date('2025-10-12T00:00:00Z') });
-    assert.match(out, /0 unit\(s\) in flight/);
   });
 });
 

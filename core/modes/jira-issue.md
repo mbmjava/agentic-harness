@@ -11,18 +11,14 @@ merge. There is **no** forge-status automation in v1.
 
 ## Intake — check, then ask
 
-On entry, look for an issue already in play, in this order:
+On entry, look for an issue already in play:
 
 1. **Handoff.** Read `working-docs/handoff.md`. If it names an in-progress issue key, offer to **pick up**
-   (default), **search**, or **create**.
-2. **Search.** Otherwise query the tracker (read-only) for issues assigned to the orchestrator in an
-   in-progress state, and present them.
-3. **Create.** Intake is **read/search only** in v1: do not write to the tracker. If nothing matches,
-   capture the intent in the backlog or a spec and **ask the owner to create the issue**, then pick it up.
+   (default).
+2. **Create.** If nothing matches, **ask the owner to name or create the issue**, then pick it up.
 
 The tracker is a mirror: the repository stays the source of truth, and tracker edits never sync back. See
-[`docs/standards/agent-standards.md`](../../docs/standards/agent-standards.md) and
-[`docs/standards/work-tracker.md`](../../docs/standards/work-tracker.md).
+[`standards.md`](../standards.md) and [`principles.md`](../principles.md).
 
 ## Formalize
 

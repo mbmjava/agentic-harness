@@ -2,20 +2,15 @@
 
 A standalone, tool-neutral agentic coding harness. One **orchestrator**, three **modes**, a supervised
 pool of **workers**. This file is the short entry to load every session; the living policy is in
-[`docs/standards/agent-standards.md`](docs/standards/agent-standards.md).
+[`core/standards.md`](core/standards.md).
 
 ## Principles
 
 - **Process is automatic or absent; documentation is a byproduct, never a deliverable.**
 - **A need becomes a capability or nothing — never a document.** If it isn't faster or safer on a real
   task, it's ceremony.
-- **Capabilities scale; process compounds.** Add a capability that does one thing; never a gate, checklist,
-  or wrapper per new need.
-- **One artifact per unit of intent.** A spec and its plan are sections of one file, not separate docs; a
-  wave is execution, not a document. Derive it once.
-- **Token awareness is a spoken readout, not a file.** Report orchestrator-vs-worker tokens/cost at the end
-  of a task; keep no ledger for it.
-- **Cowboy is the default and invisible.** If a harness change is felt in cowboy mode, treat it as suspect.
+
+Full set: [`core/principles.md`](core/principles.md).
 
 ## Operating loop
 
@@ -51,7 +46,7 @@ pool of **workers**. This file is the short entry to load every session; the liv
 | tracked | `/tracked` | dedicated (created if absent) | none | `pr-reviewer` |
 | jira-issue | `/jira-issue` | tied to an issue key | typed spec | `spec-reviewer` + `pr-reviewer` |
 
-Full policy: [`docs/standards/modes.md`](docs/standards/modes.md).
+Full policy: [`core/standards.md`](core/standards.md).
 
 ## Non-negotiables
 
@@ -79,13 +74,8 @@ Full policy: [`docs/standards/modes.md`](docs/standards/modes.md).
 
 ## Supervise
 
-- Ledger: `node scripts/supervision.mjs --add --id u1 --role worker --complexity m`
-- Watchdog: `node scripts/watch-opencode-session.mjs <child-id> <role> --complexity m --unit u1`
+- Watchdog: `node scripts/watch-opencode-session.mjs <child-id> <role> --complexity m`
 
 ## Recover
 
 - Handoff: `node scripts/handoff.mjs --issue KAN-1 --next "the exact next action"` (writes `working-docs/handoff.md`)
-
-## Track (read-only)
-
-- Intake: `node scripts/tracker.mjs --intake` (needs JIRA_TOKEN at runtime; never writes to the tracker)

@@ -3,7 +3,6 @@ import { dirname, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { currentBranch } from './git.mjs';
 import { readMode } from './mode.mjs';
-import { readLedger } from './supervision.mjs';
 
 export const HANDOFF_FILE = 'working-docs/handoff.md';
 export const CONTEXT_FILE = '.agentic/context.json';
@@ -80,11 +79,7 @@ function position(git) {
   return `${git.behind} behind / ${git.ahead} ahead`;
 }
 
-export function renderHandoff({ mode, git, units = [], spec = 'none', issue = 'none', owner = '', next = '', notes = '', pr = 'not-submitted', date }) {
-  const unitLines = units.length > 0
-    ? units.map((unit) => `- ${unit.id} — ${unit.role}/${unit.complexity} state=${unit.state} attempt=${unit.attempt}`).join('\n')
-    : '- none';
-
+export function renderHandoff({ mode, git, spec = 'none', issue = 'none', owner = '', next = '', notes = '', pr = 'not-submitted', date }) {
   return `---
 title: Handoff — ${git.branch ?? 'detached'}
 type: handoff
@@ -105,14 +100,6 @@ tags: [handoff, memory]
 - **Working tree:** ${workingTree(git)}
 - **Active spec:** ${spec}
 - **Tracker issue:** ${issue}
-
-## Open units
-
-${unitLines}
-
-## Supervision ledger
-
-Mirror of \`.agentic/supervision.json\`; ${units.length} unit(s) in flight.
 
 ## Current PR watch
 
@@ -138,13 +125,11 @@ export function generateHandoff({ root = process.cwd(), git = gitFacts(root), no
   const existing = readHandoff(root);
   const context = readContext(root);
   const mode = readMode(root).mode;
-  const units = readLedger(root).units.filter((unit) => !['done', 'failed'].includes(unit.state));
   const date = now.toISOString().slice(0, 10);
 
   return renderHandoff({
     mode,
     git,
-    units,
     spec: spec ?? context.spec ?? 'none',
     issue: issue ?? context.issue ?? 'none',
     owner: owner ?? context.owner ?? '',

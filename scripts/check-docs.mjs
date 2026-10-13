@@ -7,16 +7,14 @@ import { pathToFileURL } from 'node:url';
 import { firstExisting } from './lib/layout.mjs';
 
 const SKIP_DIRS = new Set(['node_modules', '.git', '.agentic', 'target', 'dist']);
-const CORE_FILES = ['modes/cowboy.md', 'modes/tracked.md', 'modes/jira-issue.md', 'roles/orchestrator.md', 'handoff/template.md', 'contracts/worker-brief.md'];
+const CORE_FILES = ['principles.md', 'standards.md', 'modes/cowboy.md', 'modes/tracked.md', 'modes/jira-issue.md', 'roles/orchestrator.md', 'handoff/template.md', 'contracts/worker-brief.md'];
 const MODE_COMMANDS = ['cowboy.md', 'tracked.md', 'jira-issue.md'];
-const DOC_FILES = ['modes.md', 'agent-standards.md', 'harness-checks.md', 'work-tracker.md'];
 const TARGETS = {
   core: ['core', '.agentic/core'],
   agents: ['adapters/opencode/agents', '.opencode/agents'],
   commands: ['adapters/opencode/commands', '.opencode/commands'],
   skills: ['adapters/opencode/skills', '.opencode/skills'],
   config: ['adapters/opencode/models.json', '.opencode/models.json'],
-  docs: ['docs/standards', '.agentic/docs/standards'],
 };
 
 function walk(dir, out) {
@@ -55,20 +53,17 @@ export function runCheckDocs(root = process.cwd()) {
   const commands = firstExisting(root, TARGETS.commands);
   const skills = firstExisting(root, TARGETS.skills);
   const config = firstExisting(root, TARGETS.config);
-  const docs = firstExisting(root, TARGETS.docs);
   const isSource = existsSync(resolve(root, 'adapters/opencode'));
 
   if (!core) errors.push('missing core directory (core/ or .agentic/core/)');
   if (!agents) errors.push('missing agents directory (.opencode/agents)');
   if (!commands) errors.push('missing commands directory (.opencode/commands)');
   if (!config) errors.push('missing models.json');
-  if (!docs) errors.push('missing docs directory (docs/standards or .agentic/docs/standards)');
 
   const required = [];
   if (core) for (const file of CORE_FILES) required.push(rel(resolve(core, file)));
   if (agents) required.push(rel(resolve(agents, 'orchestrator.md')));
   if (commands) for (const file of MODE_COMMANDS) required.push(rel(resolve(commands, file)));
-  if (docs) for (const file of DOC_FILES) required.push(rel(resolve(docs, file)));
   if (isSource) required.push('AGENTS.md', 'README.md', 'WORKING-AGREEMENT.md');
   for (const file of required) {
     if (!existsSync(resolve(root, file))) errors.push(`missing required file: ${file}`);
@@ -78,7 +73,6 @@ export function runCheckDocs(root = process.cwd()) {
   for (const dir of [core, agents, commands, skills]) {
     if (dir && existsSync(dir)) walk(dir, files);
   }
-  if (docs && existsSync(docs)) walk(docs, files);
   if (isSource) {
     for (const name of ['AGENTS.md', 'README.md', 'WORKING-AGREEMENT.md']) {
       const path = resolve(root, name);

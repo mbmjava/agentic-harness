@@ -43,8 +43,7 @@ integration; it drives workers rather than doing implementation itself.
   checkpoint; if that fails, stop and escalate to the user.
 - A worker that reaches its deadline is **hung**: stop it and reject its result.
 - Accept a result only if it finished before its deadline and reported success.
-- The supervision ledger (`.agentic/supervision.json`) records unit → role, session, complexity, attempt,
-  and state so a stalled or restarted session can recover.
+- The watchdog records nothing you must read — no ledger, no artifact to maintain.
 
 ## Git and integration
 

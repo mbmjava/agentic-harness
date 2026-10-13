@@ -9,7 +9,6 @@ const CANDIDATES = {
   commands: ['adapters/opencode/commands', '.opencode/commands'],
   skills: ['adapters/opencode/skills', '.opencode/skills'],
   core: ['core', '.agentic/core'],
-  docs: ['docs/standards', '.agentic/docs/standards'],
 };
 
 export function firstExisting(root, candidates) {
@@ -31,4 +30,3 @@ export const resolveAgentsDir = (root = process.cwd()) => resolveOrThrow(root, '
 export const resolveCommandsDir = (root = process.cwd()) => resolveOrThrow(root, 'commands', 'commands directory');
 export const resolveSkillsDir = (root = process.cwd()) => resolveOrThrow(root, 'skills', 'skills directory');
 export const resolveCoreDir = (root = process.cwd()) => resolveOrThrow(root, 'core', 'core directory');
-export const resolveDocsDir = (root = process.cwd()) => resolveOrThrow(root, 'docs', 'docs directory');

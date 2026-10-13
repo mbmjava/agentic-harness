@@ -8,10 +8,10 @@ import { runCheckDocs } from '../scripts/check-docs.mjs';
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
-function tempStandards(body) {
+function tempCore(body) {
   const root = mkdtempSync(join(tmpdir(), 'harness-docs-'));
-  mkdirSync(join(root, 'docs', 'standards'), { recursive: true });
-  writeFileSync(join(root, 'docs', 'standards', 'sample.md'), body);
+  mkdirSync(join(root, 'core', 'modes'), { recursive: true });
+  writeFileSync(join(root, 'core', 'modes', 'sample.md'), body);
   return root;
 }
 
@@ -23,12 +23,12 @@ describe('check-docs', () => {
   });
 
   it('reports a broken relative link', () => {
-    const { errors } = runCheckDocs(tempStandards('# x\n\n[gone](does-not-exist.md)\n'));
+    const { errors } = runCheckDocs(tempCore('# x\n\n[gone](does-not-exist.md)\n'));
     assert.ok(errors.some((error) => error.includes('broken link -> does-not-exist.md')));
   });
 
   it('ignores external links and anchors', () => {
-    const { errors } = runCheckDocs(tempStandards('[web](https://example.com) [mail](mailto:x@y.z) [self](#top)\n'));
+    const { errors } = runCheckDocs(tempCore('[web](https://example.com) [mail](mailto:x@y.z) [self](#top)\n'));
     assert.deepEqual(errors.filter((error) => error.includes('broken link')), []);
   });
 

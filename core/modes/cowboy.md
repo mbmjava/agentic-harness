@@ -44,5 +44,4 @@ These are not restrictions on the *work* — they preserve the *reins*.
 ## Recording
 
 Cowboy work is not formalized. If it turns out to matter, capture it deliberately — promote the intent into
-a spec or the backlog rather than trusting the transcript. See
-[`docs/standards/agent-standards.md`](../../docs/standards/agent-standards.md).
+a spec or the tracker rather than trusting the transcript. See [`standards.md`](../standards.md).
