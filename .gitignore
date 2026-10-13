@@ -1,0 +1,8 @@
+# Per-checkout session state (never committed)
+.agentic/
+working-docs/handoff.md
+
+# Dependencies and build output
+node_modules/
+target/
+dist/

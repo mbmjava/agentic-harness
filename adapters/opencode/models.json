@@ -1,0 +1,18 @@
+{
+  "models": {
+    "worker": { "opencode": "openrouter/poolside/laguna-s-2.1", "claude": "haiku" },
+    "worker-xs": { "opencode": "openrouter/poolside/laguna-xs-2.1", "claude": "haiku" },
+    "analyst": { "opencode": "openrouter/poolside/laguna-s-2.1", "claude": "haiku" },
+    "reviewer": { "opencode": "openrouter/openai/gpt-6-luna", "claude": "sonnet" }
+  },
+  "agents": {
+    "worker": "worker",
+    "worker-xs": "worker-xs",
+    "analyst": "analyst",
+    "spec-reviewer": "reviewer",
+    "pr-reviewer": "reviewer",
+    "judge": "reviewer"
+  },
+  "complexity": { "xs": 180000, "s": 480000, "m": 900000, "l": 1800000 },
+  "timeouts": { "defaultMs": 600000, "stopConfirmationMs": 30000, "stallMs": 120000 }
+}

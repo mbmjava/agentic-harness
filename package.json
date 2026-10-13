@@ -1,0 +1,14 @@
+{
+  "name": "agentic-harness",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A standalone, tool-neutral agentic harness: one orchestrator, three modes, a supervised worker pool.",
+  "type": "module",
+  "scripts": {
+    "mode": "node scripts/mode.mjs",
+    "guard": "node scripts/branch-guard.mjs",
+    "check": "node scripts/check-docs.mjs && node scripts/check-harness-parity.mjs && node scripts/sync-agent-models.mjs --check",
+    "test": "node --test \"tests/*.test.mjs\"",
+    "install": "node installer/install.mjs"
+  }
+}
