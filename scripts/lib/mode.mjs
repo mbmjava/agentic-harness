@@ -3,7 +3,7 @@ import { dirname, resolve } from 'node:path';
 
 export const MODES = ['cowboy', 'tracked', 'jira-issue'];
 export const DEFAULT_MODE = 'cowboy';
-export const MODE_FILE = '.agentic/mode.json';
+export const MODE_FILE = 'working-docs/agentic-state/mode.json';
 
 export function isMode(value) {
   return MODES.includes(value);

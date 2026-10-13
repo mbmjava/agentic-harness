@@ -26,7 +26,7 @@ const GIT = {
 
 function tempRoot() {
   const root = mkdtempSync(join(tmpdir(), 'harness-handoff-'));
-  mkdirSync(join(root, '.agentic'), { recursive: true });
+  mkdirSync(join(root, 'working-docs', 'agentic-state'), { recursive: true });
   return root;
 }
 
@@ -59,8 +59,8 @@ describe('renderHandoff', () => {
 describe('generateHandoff', () => {
   it('merges context and preserved sections', () => {
     const root = tempRoot();
-    writeFileSync(join(root, '.agentic', 'mode.json'), JSON.stringify({ mode: 'tracked' }));
-    writeFileSync(join(root, '.agentic', 'context.json'), JSON.stringify({ spec: 'Thing (SPEC-1)', issue: 'KAN-1' }));
+    writeFileSync(join(root, 'working-docs', 'agentic-state', 'mode.json'), JSON.stringify({ mode: 'tracked' }));
+    writeFileSync(join(root, 'working-docs', 'agentic-state', 'context.json'), JSON.stringify({ spec: 'Thing (SPEC-1)', issue: 'KAN-1' }));
     mkdirSync(join(root, 'working-docs'), { recursive: true });
     writeFileSync(join(root, HANDOFF_FILE), [
       '# old',

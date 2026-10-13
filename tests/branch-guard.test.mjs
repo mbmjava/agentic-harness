@@ -48,8 +48,8 @@ describe('branch-guard', () => {
 
   it('CLI honours overrides and returns the decision code', () => {
     const root = mkdtempSync(join(tmpdir(), 'harness-guard-'));
-    mkdirSync(join(root, '.agentic'), { recursive: true });
-    writeFileSync(join(root, '.agentic', 'mode.json'), JSON.stringify({ mode: 'tracked' }));
+    mkdirSync(join(root, 'working-docs', 'agentic-state'), { recursive: true });
+    writeFileSync(join(root, 'working-docs', 'agentic-state', 'mode.json'), JSON.stringify({ mode: 'tracked' }));
     assert.equal(runBranchGuard(['--branch', 'main'], { root }), 3);
     assert.equal(runBranchGuard(['--branch', 'feature/x'], { root }), 0);
     assert.equal(runBranchGuard(['--mode', 'cowboy', '--branch', 'main'], { root }), 0);

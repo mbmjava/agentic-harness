@@ -5,7 +5,7 @@ import { currentBranch } from './git.mjs';
 import { readMode } from './mode.mjs';
 
 export const HANDOFF_FILE = 'working-docs/handoff.md';
-export const CONTEXT_FILE = '.agentic/context.json';
+export const CONTEXT_FILE = 'working-docs/agentic-state/context.json';
 
 // ---- sources --------------------------------------------------------------------------------------
 

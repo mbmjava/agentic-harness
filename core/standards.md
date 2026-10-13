@@ -104,6 +104,9 @@ ledger, no artifact. See the `## Supervise` section of `AGENTS.md`.
 batch** — a same-batch pair can leave one child hung at launch with zero tokens (observed). Once started,
 they run concurrently, so staggering costs nothing and avoids the hang.
 
+The watchdog treats a stall as **report-only** because session progress (`time.updated`) does **not**
+heartbeat during a model turn — an actively working child can look idle. The deadline still stops true hangs.
+
 ## 6. Verification
 
 - Prefer bounded wrappers over ad hoc foreground commands; a raw foreground server/build is the hang bug.
@@ -133,3 +136,10 @@ promotion, not per commit:
 node scripts/sync-agent-models.mjs --check                # default profile (dev)
 node scripts/sync-agent-models.mjs --profile uat --write  # before promoting to uat
 ```
+
+## 9. Secrets
+
+Runtime config tree only: credentials are never committed and never inlined. Local dev secrets live in a
+gitignored `local-secrets/` mirror of `/run/secrets`; the installer adds the ignore hygiene. Per-checkout
+state (`mode.json`, `context.json`) lives in `working-docs/agentic-state/` — **never** under the
+installer-managed `.agentic/`, so a harness refresh cannot wipe it.

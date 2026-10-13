@@ -28,8 +28,9 @@ describe('installer', () => {
     assert.ok(existsSync(join(target, '.agentic', 'core', 'standards.md')));
     assert.ok(existsSync(join(target, 'scripts', 'branch-guard.mjs')));
     assert.ok(existsSync(join(target, '.agentic', 'install.json')));
-    assert.match(readFileSync(join(target, '.agentic', '.gitignore'), 'utf8'), /mode\.json/);
+    assert.match(readFileSync(join(target, '.agentic', '.gitignore'), 'utf8'), /install\.json/);
     assert.match(readFileSync(join(target, 'working-docs', '.gitignore'), 'utf8'), /handoff\.md/);
+    assert.match(readFileSync(join(target, 'working-docs', '.gitignore'), 'utf8'), /agentic-state\//);
     assert.match(readFileSync(join(target, '.gitattributes'), 'utf8'), /\* text=auto eol=lf/);
     assert.match(readFileSync(join(target, '.gitignore'), 'utf8'), /local-secrets\//);
     assert.deepEqual(check({ target }).drift, []);

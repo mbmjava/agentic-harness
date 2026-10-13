@@ -20,8 +20,8 @@ const SKIP = new Set(['__pycache__', '.DS_Store']);
 
 // Per-checkout state is ignored in the target, but the copied policy under `.agentic/core` is not.
 const GENERATED = {
-  '.agentic/.gitignore': ['# Per-checkout state (never committed)', 'mode.json', 'context.json', 'install.json', ''].join('\n'),
-  'working-docs/.gitignore': ['# Local per-checkout recovery card (never committed)', 'handoff.md', ''].join('\n'),
+  '.agentic/.gitignore': ['# Install manifest only; per-checkout state lives in working-docs/agentic-state/', 'install.json', ''].join('\n'),
+  'working-docs/.gitignore': ['# Local per-checkout state (never committed)', 'handoff.md', 'agentic-state/', ''].join('\n'),
 };
 
 // Merge (never clobber) a small block into a root config file, so adopting apps get line-ending and secrets

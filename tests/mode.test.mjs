@@ -36,8 +36,8 @@ describe('mode', () => {
 
   it('rejects a corrupt mode file', () => {
     const root = tempDir();
-    mkdirSync(join(root, '.agentic'), { recursive: true });
-    writeFileSync(join(root, '.agentic', 'mode.json'), '{"mode":"nope"}');
+    mkdirSync(join(root, 'working-docs', 'agentic-state'), { recursive: true });
+    writeFileSync(join(root, 'working-docs', 'agentic-state', 'mode.json'), '{"mode":"nope"}');
     assert.throws(() => readMode(root));
   });
 
