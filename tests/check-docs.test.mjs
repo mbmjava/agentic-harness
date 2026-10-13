@@ -8,6 +8,13 @@ import { runCheckDocs } from '../scripts/check-docs.mjs';
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
+function tempStandards(body) {
+  const root = mkdtempSync(join(tmpdir(), 'harness-docs-'));
+  mkdirSync(join(root, 'docs', 'standards'), { recursive: true });
+  writeFileSync(join(root, 'docs', 'standards', 'sample.md'), body);
+  return root;
+}
+
 describe('check-docs', () => {
   it('passes on the harness itself', () => {
     const { errors, checked } = runCheckDocs(repoRoot);
@@ -16,17 +23,19 @@ describe('check-docs', () => {
   });
 
   it('reports a broken relative link', () => {
-    const root = mkdtempSync(join(tmpdir(), 'harness-docs-'));
-    writeFileSync(join(root, 'README.md'), '# x\n\n[gone](does-not-exist.md)\n');
-    const { errors } = runCheckDocs(root);
+    const { errors } = runCheckDocs(tempStandards('# x\n\n[gone](does-not-exist.md)\n'));
     assert.ok(errors.some((error) => error.includes('broken link -> does-not-exist.md')));
   });
 
   it('ignores external links and anchors', () => {
-    const root = mkdtempSync(join(tmpdir(), 'harness-docs-'));
-    mkdirSync(join(root, 'sub'), { recursive: true });
-    writeFileSync(join(root, 'a.md'), '[web](https://example.com) [mail](mailto:x@y.z) [self](#top)\n');
-    const { errors } = runCheckDocs(root);
+    const { errors } = runCheckDocs(tempStandards('[web](https://example.com) [mail](mailto:x@y.z) [self](#top)\n'));
     assert.deepEqual(errors.filter((error) => error.includes('broken link')), []);
+  });
+
+  it('reports missing structural directories', () => {
+    const root = mkdtempSync(join(tmpdir(), 'harness-docs-'));
+    const { errors } = runCheckDocs(root);
+    assert.ok(errors.some((error) => error.includes('missing core directory')));
+    assert.ok(errors.some((error) => error.includes('missing models.json')));
   });
 });

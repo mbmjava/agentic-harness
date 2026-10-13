@@ -15,7 +15,7 @@ describe('installer', () => {
     assert.ok(targets.includes('.agentic/core/modes/cowboy.md'));
     assert.ok(targets.includes('.opencode/agents/orchestrator.md'));
     assert.ok(targets.includes('scripts/mode.mjs'));
-    assert.ok(targets.includes('docs/standards/modes.md'));
+    assert.ok(targets.includes('.agentic/docs/standards/modes.md'));
   });
 
   it('installs into a target and reports a clean check', () => {
@@ -25,7 +25,10 @@ describe('installer', () => {
     assert.ok(existsSync(join(target, '.opencode', 'agents', 'orchestrator.md')));
     assert.ok(existsSync(join(target, '.agentic', 'core', 'modes', 'cowboy.md')));
     assert.ok(existsSync(join(target, 'scripts', 'branch-guard.mjs')));
+    assert.ok(existsSync(join(target, '.agentic', 'docs', 'standards', 'modes.md')));
     assert.ok(existsSync(join(target, '.agentic', 'install.json')));
+    assert.match(readFileSync(join(target, '.agentic', '.gitignore'), 'utf8'), /supervision\.json/);
+    assert.match(readFileSync(join(target, 'working-docs', '.gitignore'), 'utf8'), /handoff\.md/);
     assert.deepEqual(check({ target }).drift, []);
   });
 

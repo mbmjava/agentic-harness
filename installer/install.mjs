@@ -14,10 +14,16 @@ const MAPS = [
   { from: 'core', to: '.agentic/core' },
   { from: 'adapters/opencode', to: '.opencode' },
   { from: 'scripts', to: 'scripts' },
-  { from: 'docs/standards', to: 'docs/standards' },
+  { from: 'docs/standards', to: '.agentic/docs/standards' },
 ];
 
 const SKIP = new Set(['__pycache__', '.DS_Store']);
+
+// Per-checkout state is ignored in the target, but the copied policy under `.agentic/core` is not.
+const GENERATED = {
+  '.agentic/.gitignore': ['# Per-checkout state (never committed)', 'mode.json', 'context.json', 'supervision.json', 'install.json', ''].join('\n'),
+  'working-docs/.gitignore': ['# Local per-checkout recovery card (never committed)', 'handoff.md', ''].join('\n'),
+};
 
 function hashFile(path) {
   return createHash('sha256').update(readFileSync(path)).digest('hex');
@@ -68,6 +74,11 @@ export function install({ target, root = ROOT, force = false, dryRun = false } =
   if (!dryRun) {
     const manifest = { version: version(root), installedAt: new Date().toISOString(), files };
     writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+    for (const [relPath, content] of Object.entries(GENERATED)) {
+      const path = join(targetRoot, relPath);
+      mkdirSync(dirname(path), { recursive: true });
+      writeFileSync(path, content);
+    }
   }
   return { files, targetRoot, dryRun };
 }
