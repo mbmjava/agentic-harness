@@ -21,12 +21,14 @@ any product; [`AGENTS.md`](AGENTS.md) points here.
 ## Non-negotiables
 
 1. **Experience-first.** Add concrete lessons (failure modes, contracts, specifics) over restated consensus.
-2. **Anti-bloat.** One canonical home per subject; link instead of duplicating.
-3. **Tool-neutral core.** Shared policy stays CLI-independent; CLI specifics stay in adapters.
-4. **Harness is code.** Instructions, agents, skills, permissions, and scripts get the same scrutiny as code.
-5. **Evidence with limits.** Results are labelled verified vs assumed.
-6. **Checks stay green.** Doc links, harness parity, model sync, and tests pass before a change lands.
-7. **Change log updated** when meaning changes.
+2. **Anti-ceremony.** Process is automatic or absent; documentation is a byproduct, never a deliverable. A
+   need becomes a capability or nothing. If it isn't faster or safer on a real task, it's ceremony.
+3. **Anti-bloat.** One canonical home per subject; link instead of duplicating. Capabilities scale; process compounds.
+4. **Tool-neutral core.** Shared policy stays CLI-independent; CLI specifics stay in adapters.
+5. **Harness is code.** Instructions, agents, skills, permissions, and scripts get the same scrutiny as code.
+6. **Evidence with limits.** Results are labelled verified vs assumed.
+7. **Checks stay green.** Doc links, harness parity, model sync, and tests pass before a change lands.
+8. **Change log updated** when meaning changes.
 
 ## Definition of done
 

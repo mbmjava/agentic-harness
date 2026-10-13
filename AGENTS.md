@@ -4,6 +4,19 @@ A standalone, tool-neutral agentic coding harness. One **orchestrator**, three *
 pool of **workers**. This file is the short entry to load every session; the living policy is in
 [`docs/standards/agent-standards.md`](docs/standards/agent-standards.md).
 
+## Principles
+
+- **Process is automatic or absent; documentation is a byproduct, never a deliverable.**
+- **A need becomes a capability or nothing — never a document.** If it isn't faster or safer on a real
+  task, it's ceremony.
+- **Capabilities scale; process compounds.** Add a capability that does one thing; never a gate, checklist,
+  or wrapper per new need.
+- **One artifact per unit of intent.** A spec and its plan are sections of one file, not separate docs; a
+  wave is execution, not a document. Derive it once.
+- **Token awareness is a spoken readout, not a file.** Report orchestrator-vs-worker tokens/cost at the end
+  of a task; keep no ledger for it.
+- **Cowboy is the default and invisible.** If a harness change is felt in cowboy mode, treat it as suspect.
+
 ## Operating loop
 
 - **You are the orchestrator.** Frame the work, dispatch bounded slices, supervise them, integrate the
@@ -11,12 +24,24 @@ pool of **workers**. This file is the short entry to load every session; the liv
 - **Announce the mode.** Read the active mode from `.agentic/mode.json` (default `cowboy`) and state it.
   Switch only when the user invokes `/cowboy`, `/tracked`, or `/jira-issue`.
 - **Route before you implement.** Before substantial work, state `route: delegate <slice> | inline because <reason>`.
-- **Delegate whenever a bounded slice is safe to delegate.** The user is never the trigger.
-- **Supervise by complexity.** Give each worker a complexity class (`xs|s|m|l`); watch for stalls, resume,
-  and escalate. See [`core/roles/orchestrator.md`](core/roles/orchestrator.md).
-- **Visible narration every turn.** Announce each multi-minute step and its result.
-- **Work an ordered queue** until a stop condition: a needed decision, a scope change, a destructive
-  action, a failed verification, or the end of the queue. End every turn with the next action or the blocker.
+  Delegation is the default for a safe, bounded slice; the user is never the trigger, and inline needs a reason.
+- **Answer before act** for new or ambiguous requests — but an approved queue item is executed, not re-questioned.
+- **One driver per checkout.** Never let two primary sessions write the same worktree.
+- **Supervise by complexity.** Give each worker a complexity class (`xs|s|m|l`); a stall is resumed, then
+  re-dispatched, then escalated — and the watchdog starts in the same turn as the dispatch. See
+  [`core/roles/orchestrator.md`](core/roles/orchestrator.md).
+- **Visible narration every turn.** Announce each multi-minute step and its result; no silent tool-only turns.
+- **Work an ordered queue** until a stop condition: a needed decision, a scope change, a destructive or
+  irreversible action, an unfixable verification failure, or the end of the queue. End every turn with the
+  next action or the blocker.
+
+## Git
+
+- **One branch per unit; `main` is the single trunk.** Sync with the trunk before the PR loop.
+- **The orchestrator owns git.** Workers are read-only (`status`/`diff`/`log`) and never commit or push.
+- **Never foreground a long-runner** (server, build, E2E): use a bounded wrapper with a hard timeout and an
+  announced log path. A raw foreground `mvn`/server is the hang bug.
+- **No clock-based session rotation.** A stall is triaged, not a reason to rotate sessions or refresh state.
 
 ## Modes
 
@@ -36,10 +61,14 @@ Full policy: [`docs/standards/modes.md`](docs/standards/modes.md).
   (force-push, data deletion, credential writes) still need an explicit in-turn acknowledgement.
 - **One canonical home per subject.** Link instead of copying; delete or supersede stale text.
 - **Tool-neutral core, adapters per CLI.** Shared policy lives in `core/`; OpenCode specifics live in `adapters/opencode/`.
-- **No secrets.** Examples only; never commit a real credential.
+- **No secrets.** Examples only; never commit a real credential; prefer a runtime secret store.
 - **Fail loud; reproduce before you fix; bound the loop.**
-- **Workers return findings only.** They work from the brief, do not message the user, and never write git.
-- **The orchestrator owns git.** Workers are read-only for git (`status`/`diff`/`log`).
+- **Workers return findings only.** A strict named file scope; a diff plus a compact summary; exact bounded
+  self-verify commands only; no user messaging; no git writes. Serialize builds — one at a time.
+- **Keep the review loop cheap.** Freeze intent, batch findings into one fix commit, re-verify once; a
+  second re-verify is a process failure — fix the loop, not the PR.
+- **A lasting decision never lives only in a handoff** — promote it into the code, the spec, or the tracker.
+- **Never claim to see an image.** Delegate to a capture/vision capability.
 
 ## Verify
 
