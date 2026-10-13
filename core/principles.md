@@ -23,3 +23,5 @@ first two; this is the canonical set.
   of a task; keep no ledger for it.
 - **Cowboy is the default and invisible.** If a harness change is felt in cowboy mode, treat it as suspect.
 - **A lasting decision never lives only in a handoff** — promote it into the code, the spec, or the tracker.
+- **Harvest findings into the harness.** An adopting app feeds confirmed improvements (rules, fixes, patterns)
+  back into `agentic-harness`; the harness is the single source and apps do not fork the process.

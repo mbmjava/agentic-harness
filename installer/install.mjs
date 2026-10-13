@@ -24,6 +24,18 @@ const GENERATED = {
   'working-docs/.gitignore': ['# Local per-checkout recovery card (never committed)', 'handoff.md', ''].join('\n'),
 };
 
+// Merge (never clobber) a small block into a root config file, so adopting apps get line-ending and secrets
+// hygiene without overwriting their own settings.
+function ensureBlock(file, header, lines) {
+  const existing = existsSync(file) ? readFileSync(file, 'utf8') : '';
+  const present = new Set(existing.split(/\r?\n/));
+  const missing = lines.filter((line) => !present.has(line));
+  if (missing.length === 0) return false;
+  const prefix = existing.trimEnd();
+  writeFileSync(file, `${prefix ? `${prefix}\n\n` : ''}${header}\n${missing.join('\n')}\n`);
+  return true;
+}
+
 function hashFile(path) {
   return createHash('sha256').update(readFileSync(path)).digest('hex');
 }
@@ -78,6 +90,8 @@ export function install({ target, root = ROOT, force = false, dryRun = false } =
       mkdirSync(dirname(path), { recursive: true });
       writeFileSync(path, content);
     }
+    ensureBlock(join(targetRoot, '.gitattributes'), '# agentic-harness: normalize line endings', ['* text=auto eol=lf']);
+    ensureBlock(join(targetRoot, '.gitignore'), '# agentic-harness: local secrets (configtree parity — never commit)', ['local-secrets/', '.env.local', '.env.prod']);
   }
   return { files, targetRoot, dryRun };
 }
