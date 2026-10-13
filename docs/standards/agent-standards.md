@@ -33,6 +33,15 @@ place.
   gate. Verify only the facts that affect that action.
 - **A lasting decision never lives only in a handoff** — promote it into the spec, the backlog, or the code.
 
+```sh
+node scripts/handoff.mjs --issue KAN-1 --next "the exact next action"   # refresh in place
+node scripts/handoff.mjs --print                                        # preview without writing
+```
+
+Generated facts (mode, branch, active spec/issue, in-flight units) come from `.agentic/`; `## Next actions`
+and `## My notes` are preserved across refreshes. `--spec`, `--issue`, `--owner`, and `--next` persist into
+`.agentic/context.json`.
+
 ## 3. Orchestrator and workers
 
 - The **orchestrator** is the single primary agent. It owns intent translation, dispatch, integration, the

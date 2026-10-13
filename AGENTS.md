@@ -52,3 +52,7 @@ Full policy: [`docs/standards/modes.md`](docs/standards/modes.md).
 
 - Ledger: `node scripts/supervision.mjs --add --id u1 --role worker --complexity m`
 - Watchdog: `node scripts/watch-opencode-session.mjs <child-id> <role> --complexity m --unit u1`
+
+## Recover
+
+- Handoff: `node scripts/handoff.mjs --issue KAN-1 --next "the exact next action"` (writes `working-docs/handoff.md`)
