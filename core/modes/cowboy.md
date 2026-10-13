@@ -11,7 +11,7 @@ the **absence of a formal gate**, not the absence of judgment.
 ## Allowed
 
 - Implement directly in the working tree, or on a scratch branch if you prefer.
-- Dispatch bounded slices to `worker` / `worker-xs`; use `analyst` for recon.
+- Dispatch bounded slices to `code-worker` / `worker-xs`; use `analyst` for recon.
 - Use reviewers at will, but none are required.
 
 ## Not applicable

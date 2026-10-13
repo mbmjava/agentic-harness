@@ -8,7 +8,7 @@ description: The self-contained shape of a delegated assignment. A worker gets e
 A worker gets a **self-contained** assignment. If it must guess, the brief failed.
 
 ```
-ROLE:        worker | worker-xs | analyst
+ROLE:        code-worker | worker-xs | analyst
 COMPLEXITY:  xs | s | m | l
 GOAL:        <one sentence: what "done" produces>
 ACCEPTANCE:  <bulleted, testable criteria>

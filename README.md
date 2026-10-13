@@ -16,8 +16,8 @@ learns from — never edit targets.
   - `/cowboy` (default): move fast, warn loudly, no formal gate.
   - `/tracked`: cowboy plus a dedicated branch and a mandatory reviewer pass.
   - `/jira-issue`: a formal, tracker-linked flow with a spec and a human merge.
-- **A supervised worker pool:** coders (`worker`, `worker-xs`), an `analyst` for recon, and independent
-  `spec-reviewer` / `pr-reviewer` / `judge` roles on a different model family.
+- **A supervised worker pool:** coders (`code-worker`, `worker-xs`), an `analyst` for recon, and independent
+  `spec-reviewer` / `pr-reviewer` / `code-judge` roles.
 - **Complexity-tiered supervision:** budgets by task size, stalls caught and resumed, hangs killed.
 
 ## Start here

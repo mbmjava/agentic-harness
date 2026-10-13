@@ -49,12 +49,12 @@ describe('sync-agent-models', () => {
 
   it('detects drift and --write fixes it', () => {
     const root = tempHarness();
-    const agentPath = join(root, 'adapters', 'opencode', 'agents', 'worker.md');
+    const agentPath = join(root, 'adapters', 'opencode', 'agents', 'code-worker.md');
     writeFileSync(agentPath, '---\ndescription: x\nmode: subagent\nmodel: wrong/model\n---\nbody\n');
 
     const check = runSync({ root });
     assert.equal(check.problems.length, 1);
-    assert.match(check.problems[0], /worker\.md/);
+    assert.match(check.problems[0], /code-worker\.md/);
 
     const write = runSync({ root, write: true });
     assert.equal(write.problems.length, 0);

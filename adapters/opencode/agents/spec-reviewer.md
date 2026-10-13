@@ -1,7 +1,7 @@
 ---
 description: Read-only spec reviewer. Reviews a canonical requirement against the spec checklist; returns approve/request-changes/escalate. Never edits, never runs shell.
 mode: subagent
-model: openrouter/openai/gpt-6-luna
+model: openrouter/poolside/laguna-s-2.1
 permissions:
   - action: "*"
     resource: "*"

@@ -4,11 +4,11 @@
     "orchestrator": {
       "permissions": [
         { "action": "subagent", "resource": "*", "effect": "deny" },
-        { "action": "subagent", "resource": "worker", "effect": "allow" },
+        { "action": "subagent", "resource": "code-worker", "effect": "allow" },
         { "action": "subagent", "resource": "worker-xs", "effect": "allow" },
         { "action": "subagent", "resource": "analyst", "effect": "allow" },
         { "action": "subagent", "resource": "pr-reviewer", "effect": "allow" },
-        { "action": "subagent", "resource": "judge", "effect": "allow" },
+        { "action": "subagent", "resource": "code-judge", "effect": "allow" },
         { "action": "subagent", "resource": "spec-reviewer", "effect": "ask" }
       ]
     }

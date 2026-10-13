@@ -1,7 +1,7 @@
 ---
 description: Read-only adversarial judge. Independently verifies the reviewer's findings and the acceptance criteria; returns approve/request-changes/escalate. Fail-closed. Never edits, never runs shell.
 mode: subagent
-model: openrouter/openai/gpt-6-luna
+model: openrouter/poolside/laguna-s-2.1
 permissions:
   - action: "*"
     resource: "*"

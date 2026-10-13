@@ -18,20 +18,20 @@ before the work counts as done. It does not require a spec.
 
 ## Work
 
-- Dispatch bounded slices to `worker` / `worker-xs` on the dedicated branch.
+- Dispatch bounded slices to `code-worker` / `worker-xs` on the dedicated branch.
 - The orchestrator owns git and makes the commits.
 
 ## Review — required
 
 - Every change gets one **`pr-reviewer`** pass before it is considered done.
-- Add the **`judge`** pass when the change is large or the review is contested.
+- Add the **`code-judge`** pass when the change is large or the review is contested.
 - Record the verdict with the reviewed head SHA.
 
 ## Risk handling
 
 - Reversible risk: warn loudly, continue (same as cowboy).
 - A change across a hard boundary (public wire contract, schema/migration, auth, tenancy/privacy, data
-  integrity, external integration, production/deploy) gets the **gated** treatment: add the `judge` pass and
+  integrity, external integration, production/deploy) gets the **gated** treatment: add the `code-judge` pass and
   a focused security review before the reviewer verdict is accepted. When a boundary is arguable, treat it
   as gated.
 

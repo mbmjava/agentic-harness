@@ -20,7 +20,7 @@ it is orthogonal to *risk*: a mode sets the **default** rigor, and a specific ch
 | Mode | Command | Branch | Spec | Review | Risk |
 | --- | --- | --- | --- | --- | --- |
 | cowboy | `/cowboy` | none | none | none | warn loudly, continue |
-| tracked | `/tracked` | dedicated (created if absent) | none | `pr-reviewer`; `judge` across a boundary | warn + gated review |
+| tracked | `/tracked` | dedicated (created if absent) | none | `pr-reviewer`; `code-judge` across a boundary | warn + gated review |
 | jira-issue | `/jira-issue` | references the issue key | typed spec | `spec-reviewer` + `pr-reviewer` | gated |
 
 Full policy per mode: [`modes/cowboy.md`](modes/cowboy.md), [`modes/tracked.md`](modes/tracked.md),
@@ -32,7 +32,7 @@ one**; announce the mode at the top of the turn.
 
 **Risk boundaries.** A hard boundary is: public wire contract, schema/migration, authn/authz, tenancy/privacy,
 data integrity or deletion, an external integration, or prod/deploy. In `tracked`/`jira-issue` a change across
-one gets the gated treatment (add the `judge` pass and a focused review).
+one gets the gated treatment (add the `code-judge` pass and a focused review).
 
 **Cowboy's one exception.** Cowboy warns and continues across reversible risk; **irreversible or
 secret-exposing** acts still need an explicit in-turn acknowledgement: history rewriting or force operations,
@@ -74,11 +74,11 @@ Template: [`handoff/template.md`](handoff/template.md).
   gate, and git. It does not hand-implement except small integration glue. See [`roles/orchestrator.md`](roles/orchestrator.md).
 - A **worker** gets a self-contained brief (goal, acceptance criteria, strict write scope, references,
   out-of-scope, exact verify commands) and a complexity class. It returns findings and a diff only, does not
-  message the user, and never writes git. See [`roles/worker.md`](roles/worker.md) and
+  message the user, and never writes git. See [`roles/code-worker.md`](roles/code-worker.md) and
   [`contracts/worker-brief.md`](contracts/worker-brief.md).
 - Parallelize only work with disjoint write scopes. Serialize builds — output, ports, and caches are shared.
-- Match the cheapest tier that can hold quality: `worker-xs` (mechanical), `worker` (scoped), `analyst`
-  (read-only recon), `spec-reviewer`/`pr-reviewer`/`judge` (independent review on a different model family).
+- Match the cheapest tier that can hold quality: `worker-xs` (mechanical), `code-worker` (scoped), `analyst`
+  (read-only recon), `spec-reviewer`/`pr-reviewer`/`code-judge` (independent review on a different model family).
 
 ## 5. Supervision
 

@@ -31,9 +31,9 @@ integration; it drives workers rather than doing implementation itself.
 - Delegate whenever a bounded slice can be safely delegated. The user is never the trigger.
 - Parallelize only work with disjoint write scopes and independent verification.
 - Serialize build and verification: build output, ports, and caches are shared.
-- Match the cheapest tier that can hold quality: `worker-xs` for mechanical edits, `worker` for scoped
+- Match the cheapest tier that can hold quality: `worker-xs` for mechanical edits, `code-worker` for scoped
   implementation, `analyst` for read-only recon.
-- Use `spec-reviewer` and `architecture-reviewer` on request; `pr-reviewer` and `judge` for review.
+- Use `spec-reviewer` on request; `pr-reviewer` and `code-judge` for review.
 
 ## Supervision
 

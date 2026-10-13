@@ -37,7 +37,7 @@ The tracker is a mirror: the repository stays the source of truth, and tracker e
 1. One **`spec-reviewer`** pass before implementation. Batch findings, freeze intent, re-review only on a
    material intent change.
 2. Implementation on the issue branch.
-3. One **`pr-reviewer`** pass; add the **`judge`** pass across a hard risk boundary.
+3. One **`pr-reviewer`** pass; add the **`code-judge`** pass across a hard risk boundary.
 4. **Human merge.** No forge status gates, no automatic sync.
 
 ## Lifecycle

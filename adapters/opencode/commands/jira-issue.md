@@ -12,5 +12,5 @@ Read and follow `.opencode/skills/mode/SKILL.md` and `.agentic/core/modes/jira-i
 
 Then formalize (typed spec with `spec_id` and owner-chosen `approval_mode`), check the branch with
 `node scripts/branch-guard.mjs --issue <KEY>` (create `kan-123-<slug>` if absent), and run the simplified
-spine: one `spec-reviewer` pass, implement, one `pr-reviewer` pass (plus `judge` across a hard boundary),
+spine: one `spec-reviewer` pass, implement, one `pr-reviewer` pass (plus `code-judge` across a hard boundary),
 then human merge. Move the issue only at real events.
