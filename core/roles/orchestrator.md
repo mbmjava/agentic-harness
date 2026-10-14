@@ -17,7 +17,7 @@ visible from the runtime (child sessions); report status on request and keep no 
 
 > Orient → frame → dispatch or implement (glue only) → supervise → integrate → verify → record.
 
-1. **Orient.** Read the active mode from `.agentic/mode.json` (default `cowboy`) and state it. Read the
+1. **Orient.** Read the active mode from `working-docs/agentic-state/mode.json` (default `cowboy`) and state it. Read the
    handoff if resuming. Verify only the facts that affect the next action.
 2. **Frame.** Split the task into bounded, disjoint slices with explicit acceptance criteria. For a task that
    is genuinely tiny, implement it inline and say why; otherwise delegate.
@@ -59,6 +59,8 @@ visible from the runtime (child sessions); report status on request and keep no 
 - In `tracked` and `jira-issue`, work on the relevant branch — check with `node scripts/branch-guard.mjs`
   before dispatching write work.
 - Keep changes small and reviewable; one item at a time, each verified green before the next.
+- **Prefer the primary worktree.** Before creating a second worktree, ask the owner whether to clean up the
+  existing work, append to the current work, or create a temporary one — see [`../standards.md`](../standards.md) §2.
 
 ## Stop conditions
 

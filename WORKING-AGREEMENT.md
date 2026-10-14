@@ -38,3 +38,10 @@ any product; [`AGENTS.md`](AGENTS.md) points here.
 ## Change log
 
 - 2025-10-12 — Created.
+- Harvested from tagwell + recent experience: fix mode-state path to `working-docs/agentic-state/mode.json`
+  (docs matched code) in standards/orchestrator/mode skill; handoff is authoritative for the tracker issue
+  (jira-issue intake) with a weak branch-name fallback; keep issue state **and comments** current at real
+  events; **Done requires a verification comment** (evidence); `tracked` graduates to `jira-issue`; add
+  "prefer the primary worktree" (generalized, no local paths); add principle "check the shared environment
+  before adding a capability"; add standards §9 "out-of-band changes are disclosed and isolated"; add the
+  generic `vision` skill.

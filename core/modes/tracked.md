@@ -39,6 +39,11 @@ before the work counts as done. It does not require a spec.
 
 - The reviewer verdict is `approve` (or findings are fixed and re-verified once), and the user accepts.
 
+## Graduation
+
+- When the work turns out to need a tracker issue, **graduate to jira-issue** — attach the issue and add the
+  spec — rather than restarting the work.
+
 ## Out of bounds
 
 - Never silently edit the harness's own controls.

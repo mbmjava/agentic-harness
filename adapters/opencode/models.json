@@ -32,6 +32,6 @@
       "code-judge": "luna-pro"
     }
   },
-  "complexity": { "xs": 180000, "s": 480000, "m": 900000, "l": 1800000 },
-  "timeouts": { "defaultMs": 600000, "stopConfirmationMs": 30000, "stallMs": 120000 }
+  "complexity": { "xs": 600000, "s": 1500000, "m": 2700000, "l": 5400000 },
+  "timeouts": { "defaultMs": 1800000, "stopConfirmationMs": 30000, "stallMs": 600000 }
 }

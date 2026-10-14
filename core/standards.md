@@ -26,7 +26,7 @@ it is orthogonal to *risk*: a mode sets the **default** rigor, and a specific ch
 Full policy per mode: [`modes/cowboy.md`](modes/cowboy.md), [`modes/tracked.md`](modes/tracked.md),
 [`modes/jira-issue.md`](modes/jira-issue.md).
 
-**Entry.** Record the mode (`node scripts/mode.mjs --set <mode>` → `.agentic/mode.json`); `tracked` and
+**Entry.** Record the mode (`node scripts/mode.mjs --set <mode>` → `working-docs/agentic-state/mode.json`); `tracked` and
 `jira-issue` run `node scripts/branch-guard.mjs` and, if the branch is not relevant, **ask before creating
 one**; announce the mode at the top of the turn.
 
@@ -49,14 +49,19 @@ controls; never push to a protected branch.
   irreversible action, an unfixable verification failure, or the end of the queue. End every turn with the
   next action or the blocker.
 - **One driver per checkout.** Never let two primary sessions write the same worktree.
+- **Prefer the primary worktree.** Do the work in the repo's primary checkout. If you cannot — it holds other
+  in-flight work, is dirty, or sits on an unrelated branch — **ask the owner** whether to clean up the existing
+  work, append to the current work, or create a temporary worktree. Never silently create a second worktree.
 - **Visible narration every turn.** Announce each multi-minute step and its result; no silent tool-only turns.
 - **No clock-based session rotation.** A stall is triaged, not a reason to rotate sessions or refresh state.
 
 ## 3. Handoff
 
 `working-docs/handoff.md` is the developer's **local, per-checkout recovery card** — gitignored, never
-committed, retained after merge. Its source-derived facts (mode, branch, active spec/issue) are generated;
-`## Next actions` and `## My notes` are the few non-derivable bullets, preserved across refreshes.
+committed, retained after merge. Being per-developer and untracked, it is the authoritative answer to "is this
+session on a tracker issue, and which?" — keep its `Tracker issue:` line a bare key and status. Its
+source-derived facts (mode, branch, active spec/issue) are generated; `## Next actions` and `## My notes` are
+the few non-derivable bullets, preserved across refreshes.
 
 On an explicit "resume", read it and start from its exact next action; treat it as a recovery card, not a
 gate. A lasting decision never lives only in a handoff — promote it into the code, the spec, or the tracker.
@@ -144,9 +149,13 @@ node scripts/sync-agent-models.mjs --check                # default profile (dev
 node scripts/sync-agent-models.mjs --profile uat --write  # before promoting to uat
 ```
 
-## 9. Secrets
+## 9. Secrets and shared resources
 
 Runtime config tree only: credentials are never committed and never inlined. Local dev secrets live in a
 gitignored `local-secrets/` mirror of `/run/secrets`; the installer adds the ignore hygiene. Per-checkout
 state (`mode.json`, `context.json`) lives in `working-docs/agentic-state/` — **never** under the
 installer-managed `.agentic/`, so a harness refresh cannot wipe it.
+
+**Out-of-band changes are disclosed and isolated.** Anything created outside the repo — shared infra objects
+(schemas, databases, buckets), credentials, external issues — is reported in the turn, and prefers its own
+schema/namespace over shared state.
