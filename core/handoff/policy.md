@@ -13,8 +13,9 @@ A handoff is the developer's **local recovery card for this checkout**, not a sh
   the active mode, the active spec/issue, and the next action.
   `## My notes` is an **optional** card: a few short bullets only when non-derivable context would otherwise
   be lost (a decision/uncertainty, a blocker, the exact next action). Empty beats duplicated.
-- **Resume on request.** On an explicit "resume", read the handoff and start from its exact next action;
-  treat it as a recovery card and source index, not a gate. Verify only the facts that affect that action.
+- **Resume is automatic.** Read the handoff at the start of every session and continue from its exact next
+  action; an explicit "resume" (or `/resume`) does the same thing. Treat it as a recovery card and source
+  index, not a gate. Verify only the facts that affect that action.
 - **A lasting decision never lives only in a handoff** — promote it into the spec, the tracker, or the code.
 - **Export only when traveling.** The handoff does not leave this checkout on its own.
 

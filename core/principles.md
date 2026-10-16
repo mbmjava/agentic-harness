@@ -19,6 +19,9 @@ first two; this is the canonical set.
   or wrapper per new need.
 - **One artifact per unit of intent.** A spec and its plan are sections of one file, not separate docs; a
   wave is execution, not a document. Derive it once.
+- **Check the shared environment before adding a capability.** Look for an existing one (sibling repos,
+  shared services/workflows) and reuse or align; if the need is already covered, close or re-scope rather
+  than reimplement.
 - **Token awareness is a spoken readout, not a file.** Report orchestrator-vs-worker tokens/cost at the end
   of a task; keep no ledger for it.
 - **Cowboy is the default and invisible.** If a harness change is felt in cowboy mode, treat it as suspect.

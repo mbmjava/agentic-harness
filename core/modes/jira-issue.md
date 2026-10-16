@@ -13,9 +13,14 @@ merge. There is **no** forge-status automation in v1.
 
 On entry, look for an issue already in play:
 
-1. **Handoff.** Read `working-docs/handoff.md`. If it names an in-progress issue key, offer to **pick up**
-   (default).
+1. **Handoff (authoritative).** Read `working-docs/handoff.md` and its `Tracker issue:` line. The handoff is
+   developer-specific and untracked by design, so it is the session's answer to "am I on a tracker issue, and
+   which?" — if it names an issue key, offer to **pick up** (default). Keep `context.json`'s `issue` to a key and
+   status so that line stays unambiguous; leave prose to `## Next actions`.
 2. **Create.** If nothing matches, **ask the owner to name or create the issue**, then pick it up.
+3. **Last resort.** If the handoff is absent (a fresh checkout — it is gitignored), fall back to the branch name
+   `kan-<n>-<slug>` as a weak signal and confirm it with the owner before acting. The branch name is *not*
+   authoritative.
 
 The tracker is a mirror: the repository stays the source of truth, and tracker edits never sync back. See
 [`standards.md`](../standards.md) and [`principles.md`](../principles.md).
@@ -42,10 +47,17 @@ The tracker is a mirror: the repository stays the source of truth, and tracker e
 
 ## Lifecycle
 
-Move the issue only at a real event, using an offered transition: To Do → Ready (frozen/preflight-ready) →
-In Progress (implementation started) → In Review (PR/review pending) → Done (merged and owner-accepted).
-Log no time and edit no issue content without approval.
+Keep the issue's **state and comments current** as work proceeds, so the tracker is readable at any moment
+without reading the repository. Move the status only at a real event, using an offered transition: To Do →
+Ready (frozen/preflight-ready) → In Progress (implementation started) → In Review (PR/review pending) →
+Done (merged and owner-accepted).
+
+Comment at the same real events — work started, a decision or blocker needing the owner, review requested,
+PR opened, merged (with the PR/commit reference). A comment is a factual progress record; never edit the
+issue's description or other content without approval, and log no time.
 
 ## Done when
 
 - The spec review and PR review are clean, CI is green, the human merges, and the owner accepts.
+- A **verification comment** records the evidence (live result, counts, test names) on the issue. "Implemented"
+  alone is not Done.

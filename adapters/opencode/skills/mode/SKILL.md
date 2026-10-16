@@ -19,7 +19,7 @@ node scripts/mode.mjs --set cowboy|tracked|jira-issue
 node scripts/mode.mjs          # print the active mode
 ```
 
-The mode lives in `.agentic/mode.json` (per-checkout, gitignored). Announce it in the first line of the turn.
+The mode lives in `working-docs/agentic-state/mode.json` (per-checkout, gitignored). Announce it in the first line of the turn.
 
 ## 2. Enforce the branch guard
 

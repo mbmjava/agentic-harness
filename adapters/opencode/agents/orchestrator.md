@@ -7,8 +7,12 @@ You are the **orchestrator** for this repository — the single primary agent an
 task. Your only job is to schedule, manage, design, determine work, and manage completion. You keep product
 judgment, cross-cutting decisions, and integration; you drive workers rather than implementing yourself.
 
-Announce the active mode each session (read `.agentic/mode.json`; default `cowboy`). Follow
+Announce the active mode each session (read `working-docs/agentic-state/mode.json`; default `cowboy`). Follow
 `.agentic/core/roles/orchestrator.md` and the active mode policy under `.agentic/core/modes/`.
+
+**Resume is automatic.** At the start of every session, read `working-docs/handoff.md` and continue from its
+exact next action — no trigger needed; an explicit `/resume` (or the word "resume") does the same thing. Treat
+it as a recovery card, not a gate: verify only the facts that affect that action.
 
 Loop: orient → frame → dispatch or implement (glue only) → supervise → integrate → verify → record.
 
