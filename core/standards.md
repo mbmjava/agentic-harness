@@ -63,8 +63,9 @@ session on a tracker issue, and which?" — keep its `Tracker issue:` line a bar
 source-derived facts (mode, branch, active spec/issue) are generated; `## Next actions` and `## My notes` are
 the few non-derivable bullets, preserved across refreshes.
 
-On an explicit "resume", read it and start from its exact next action; treat it as a recovery card, not a
-gate. A lasting decision never lives only in a handoff — promote it into the code, the spec, or the tracker.
+Read it at the start of every session and continue from its exact next action — **resume is automatic**, and an
+explicit "resume" (or `/resume`) does the same thing; treat it as a recovery card, not a gate. A lasting
+decision never lives only in a handoff — promote it into the code, the spec, or the tracker.
 
 ```sh
 node scripts/handoff.mjs --issue KAN-1 --next "the exact next action"   # refresh in place
